@@ -33,3 +33,20 @@ jobs:
 
       - name: Push Docker image
         run: docker push veda2007/user-service:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 18.61.83.81
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull veda2007/user-service:latest
+            docker rm -f user-service || true
+            docker run -d \
+              --name user-service \
+              -p 8081:8081 \
+              -e SPRING_DATASOURCE_URL="jdbc:mysql://microservices-db.cx0yyc4yumkq.ap-south-2.rds.amazonaws.com:3306/user_db" \
+              -e SPRING_DATASOURCE_USERNAME="admin" \
+              -e SPRING_DATASOURCE_PASSWORD="Veda!2007" \
+              veda2007/user-service:latest
