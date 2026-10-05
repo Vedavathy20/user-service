@@ -29,7 +29,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t Veda2007/user-service:latest .
+        run: docker build -t veda2007/user-service:latest .
 
       - name: Push Docker image
-        run: docker push Veda2007/user-service:latest
+        run: docker push veda2007/user-service:latest
